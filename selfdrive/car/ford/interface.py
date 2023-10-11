@@ -61,6 +61,10 @@ class CarInterface(CarInterfaceBase):
       ret.steerRatio = 17.0
       ret.mass = 2729
 
+      ret.longitudinalTuning.kpBP = [0.]
+      ret.longitudinalTuning.kpV = [0.5]
+      ret.longitudinalTuning.kiV = [0.]
+
     elif candidate == CAR.FOCUS_MK4:
       ret.wheelbase = 2.7
       ret.steerRatio = 15.0
