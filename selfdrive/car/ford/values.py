@@ -1,6 +1,6 @@
 from collections import defaultdict
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Dict, List, Union
 
 from cereal import car
@@ -40,16 +40,18 @@ class CarControllerParams:
     pass
 
 
-class CAR:
+class CAR(StrEnum):
   BRONCO_SPORT_MK1 = "FORD BRONCO SPORT 1ST GEN"
   ESCAPE_MK4 = "FORD ESCAPE 4TH GEN"
   EXPLORER_MK6 = "FORD EXPLORER 6TH GEN"
   F_150_MK14 = "FORD F-150 14TH GEN"
   FOCUS_MK4 = "FORD FOCUS 4TH GEN"
   MAVERICK_MK1 = "FORD MAVERICK 1ST GEN"
+  F_150_LIGHTNING_MK1 = "FORD F-150 LIGHTNING 1ST GEN"
 
 
-CANFD_CAR = {CAR.F_150_MK14}
+CANFD_CAR = {CAR.F_150_MK14, CAR.F_150_LIGHTNING_MK1}
+FORD_EV = {CAR.F_150_LIGHTNING_MK1}
 
 
 class RADAR:
@@ -60,7 +62,7 @@ class RADAR:
 DBC: Dict[str, Dict[str, str]] = defaultdict(lambda: dbc_dict("ford_lincoln_base_pt", RADAR.DELPHI_MRR))
 
 # F-150 radar is not yet supported
-DBC[CAR.F_150_MK14] = dbc_dict("ford_lincoln_base_pt", None)
+DBC[CAR.F_150_MK14, CAR.F_150_LIGHTNING_MK1] = dbc_dict("ford_lincoln_base_pt", None)
 
 
 class Footnote(Enum):
@@ -78,7 +80,9 @@ class FordCarInfo(CarInfo):
 
   def init_make(self, CP: car.CarParams):
     if CP.carFingerprint in (CAR.BRONCO_SPORT_MK1, CAR.MAVERICK_MK1):
-      self.car_parts = CarParts([Device.three_angled_mount, CarHarness.ford_q3])
+      self.car_parts = CarParts([Device.threex_angled_mount, CarHarness.ford_q3])
+    if CP.carFingerprint in (CAR.F_150_LIGHTNING_MK1):
+      SELF.car_parts = CarParts([Device.threex_angled_mount, CarHarness.ford_q4])
 
 
 CAR_INFO: Dict[str, Union[CarInfo, List[CarInfo]]] = {
@@ -92,6 +96,7 @@ CAR_INFO: Dict[str, Union[CarInfo, List[CarInfo]]] = {
     FordCarInfo("Lincoln Aviator 2020-21", "Co-Pilot360 Plus"),
   ],
   CAR.F_150_MK14: FordCarInfo("Ford F-150 2023", "Co-Pilot360 Active 2.0"),
+  CAR.F_150_LIGHTNING_MK1: FordCarInfo("Ford F-150 Lightning 2022-2023", "Co-Pilot360 Active 2.0"),
   CAR.FOCUS_MK4: FordCarInfo("Ford Focus 2018", "Adaptive Cruise Control with Lane Centering", footnotes=[Footnote.FOCUS]),
   CAR.MAVERICK_MK1: [
     FordCarInfo("Ford Maverick 2022", "LARIAT Luxury"),
@@ -230,6 +235,11 @@ FW_VERSIONS = {
       b'PL3A-14C204-BRB\x00\x00\x00\x00\x00\x00\x00\x00\x00',
     ],
   },
+  CAR.F_150_LIGHTNING_MK1: {
+    (Ecu.shiftByWire, 0x732, None): [
+      b'ML3P-7P470-AK\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
+    ],
+  },
   CAR.FOCUS_MK4: {
     (Ecu.eps, 0x730, None): [
       b'JX6C-14D003-AH\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
@@ -267,6 +277,7 @@ FW_VERSIONS = {
       b'NZ6A-14C204-ZA\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
       b'PZ6A-14C204-BE\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
       b'PZ6A-14C204-JC\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
+      b'PZ6A-14C204-JE\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
     ],
   },
 }
