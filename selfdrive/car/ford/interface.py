@@ -14,7 +14,7 @@ class CarInterface(CarInterfaceBase):
   @staticmethod
   def _get_params(ret, candidate, fingerprint, car_fw, experimental_long, docs):
     ret.carName = "ford"
-    ret.dashcamOnly = candidate in {CAR.F_150_MK14}
+    #ret.dashcamOnly = candidate in {CAR.F_150_MK14}
 
     ret.radarUnavailable = True
     ret.steerControlType = car.CarParams.SteerControlType.angle
@@ -74,6 +74,11 @@ class CarInterface(CarInterfaceBase):
       ret.wheelbase = 3.076
       ret.steerRatio = 17.0
       ret.mass = 1650
+
+    elif candidate == CAR.MUSTANG_MACH_E_MK1:
+      ret.wheelbase = 2.984
+      ret.steerRatio = 17.0  # guess
+      ret.mass = 2200 + STD_CARGO_KG
 
     else:
       raise ValueError(f"Unsupported car: {candidate}")
