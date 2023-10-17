@@ -74,6 +74,11 @@ class CarInterface(CarInterfaceBase):
       ret.steerRatio = 17.0
       ret.mass = 1650
 
+    elif candidate == CAR.MUSTANG_MACH_E_MK1:
+      ret.wheelbase = 2.984
+      ret.steerRatio = 17.0  # guess
+      ret.mass = 2200 + STD_CARGO_KG
+
     else:
       raise ValueError(f"Unsupported car: {candidate}")
 
