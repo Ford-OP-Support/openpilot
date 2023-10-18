@@ -87,7 +87,7 @@ def create_lat_ctl_msg(packer, CAN: CanBus, lat_active: bool, path_offset: float
 
 
 def create_lat_ctl2_msg(packer, CAN: CanBus, mode: int, path_offset: float, path_angle: float, curvature: float,
-                        curvature_rate: float, counter: int):
+                        curvature_rate: float, counter: int, precision: int):
   """
   Create a CAN message for the new Ford Lane Centering command.
 
