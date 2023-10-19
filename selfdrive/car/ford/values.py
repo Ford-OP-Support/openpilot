@@ -62,8 +62,8 @@ class RADAR:
 
 DBC: Dict[str, Dict[str, str]] = defaultdict(lambda: dbc_dict("ford_lincoln_base_pt", RADAR.DELPHI_MRR))
 
-# F-150 radar is not yet supported
-DBC[CAR.F_150_MK14, CAR.F_150_LIGHTNING_MK1] = dbc_dict("ford_lincoln_base_pt", None)
+# F-150 / Mach-E radar is not yet supported
+DBC[CAR.F_150_MK14, CAR.F_150_LIGHTNING_MK1, CAR.MUSTANG_MACH_E_MK1] = dbc_dict("ford_lincoln_base_pt", None)
 
 
 class Footnote(Enum):
@@ -84,6 +84,8 @@ class FordCarInfo(CarInfo):
       self.car_parts = CarParts([Device.threex_angled_mount, CarHarness.ford_q3])
     if CP.carFingerprint in (CAR.F_150_LIGHTNING_MK1):
       SELF.car_parts = CarParts([Device.threex_angled_mount, CarHarness.ford_q4])
+    if CP.carFingerprint in (CAR.MUSTANG_MACH_E_MK1):
+      self.car_parts = CarParts([CarHarness.ford_q4])
 
 
 CAR_INFO: Dict[str, Union[CarInfo, List[CarInfo]]] = {
@@ -284,14 +286,38 @@ FW_VERSIONS = {
   },
   CAR.MUSTANG_MACH_E_MK1: {
     (Ecu.eps, 0x730, None): [
+      b'LJ9C-3F964-AL\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
+      b'LJ9C-3F964-AL\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
+      b'LJ9C-14D003-AM\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
+      b'LJ9C-14D004-AAM\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
     ],
     (Ecu.abs, 0x760, None): [
+      b'LJ9C-2C219-AK\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
+      b'LJ9C-2C219-AK\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
+      b'LK9C-2D053-CD\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
     ],
     (Ecu.fwdRadar, 0x764, None): [
+      b'ML3T-9G768-AH\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
+      b'ML3T-9G768-AL\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
+      b'ML3T-14D049-AL\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
     ],
     (Ecu.fwdCamera, 0x706, None): [
+      b'LJ8T-14G647-NA\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
+      b'LJ8T-14G647-NA\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
+      b'ML3T-14H102-ABS\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
+      b'ML3T-14H103-AAJ\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
     ],
     (Ecu.engine, 0x7E0, None): [
+      b'MJ98-12A650-VA\x00\x00\x00\x00\x00\x00\x00\x00\x00',
+      b'MJ98-12A650-VA\x00\x00\x00\x00\x00\x00\x00\x00\x00',
+      b'MJ98-14C204-BBN\x00\x00\x00\x00\x00\x00\x00\x00\x00',
+      b'LJ98-12B684-AE\x00\x00\x00\x00\x00\x00\x00\x00\x00',
+    ],
+    (Ecu.shiftByWire, 0x732, None): [
+      b'LJ9P-7P155-AG\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
+      b'LJ9P-7P155-AG\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
+      b'LJ9P-14G395-AH\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
+      b'LJ9P-14G396-AH\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
     ],
   },
 }
